@@ -3,7 +3,6 @@ package repositories
 import (
 	"delivery/models"
 	"errors"
-	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -22,19 +21,19 @@ func NewGormDishRepository(db *gorm.DB) *GormDishRepository {
 func (r *GormDishRepository) CreateOrUpdateDish(dish *models.Dish) error {
 	var existingDish models.Dish
 
-	err := r.DB.First(&existingDish, dish.ID).Error
+	err := r.DB.First(&existingDish, "id = ?", dish.ID).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = r.DB.Create(dish).Error
-		fmt.Printf(err.Error())
+		err = r.DB.Create(&dish).Error
+		if err != nil {
+			return err
+		}
+
+		return nil
 	}
 
 	if err != nil {
 		return err
 	}
 
-	existingDish.ID = dish.ID
-	existingDish.Name = dish.Name
-	existingDish.Description = dish.Description
-	existingDish.Price = dish.Price
-	return r.DB.Save(&existingDish).Error
+	return r.DB.Updates(&dish).Error
 }
