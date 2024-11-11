@@ -15,18 +15,37 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = db.AutoMigrate(
-		&models.User{},
-		&models.Courier{},
-		&models.Delivery{},
-		&models.Dish{},
-		&models.Order{},
-		&models.Restaurant{},
-		&models.User{},
-	)
-	if err != nil {
-		log.Fatal(err)
+	//err = db.AutoMigrate(
+	//	&models.User{},
+	//	&models.Courier{},
+	//	&models.Delivery{},
+	//	&models.Dish{},
+	//	&models.Order{},
+	//	&models.Restaurant{},
+	//	&models.User{},
+	//)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//fmt.Println("Successfully migrated DB")
+	//
+	//provider := providers.NewFileDishProvider("dishes.json")
+	//err = services.UpdateDishes(provider, db)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+
+	dish := models.Dish{
+		ID:          1,
+		Name:        "TEST",
+		Description: "TEST",
+		Price:       100.12,
 	}
 
-	fmt.Println("Successfully migrated DB")
+	result = db.First(&dish)
+
+	fmt.Println(err.Error())
+
+	db.Create(&dish)
 }
