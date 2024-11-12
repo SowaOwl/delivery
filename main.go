@@ -2,7 +2,6 @@ package main
 
 import (
 	"delivery/internal/model"
-	"delivery/internal/service"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -37,14 +36,21 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	orderDTO := service.CreateOrderDTO{
-		UserId:   1,
-		Dishes:   []model.Dish{{ID: 42}, {ID: 929}, {ID: 248}},
-		OrderSum: 76.2,
-	}
+	//orderDTO := service.CreateOrderDTO{
+	//	UserId:   1,
+	//	Dishes:   []model.Dish{{ID: 42}, {ID: 929}, {ID: 248}},
+	//	OrderSum: 76.2,
+	//}
+	//
+	//err = service.CreateOrder(orderDTO, db)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
-	err = service.CreateOrder(orderDTO, db)
-	if err != nil {
-		log.Fatal(err)
-	}
+	//order := model.Order{ID: 1}
+	//
+	//err = service.CancelledOrder(order, db)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 }

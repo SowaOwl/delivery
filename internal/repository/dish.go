@@ -8,6 +8,7 @@ import (
 
 type DishRepository interface {
 	CreateOrUpdateDish(dish *model.Dish) error
+	GetAll() ([]*model.Dish, error)
 }
 
 type GormDishRepository struct {
@@ -36,4 +37,15 @@ func (r *GormDishRepository) CreateOrUpdateDish(dish *model.Dish) error {
 	}
 
 	return r.DB.Model(&existingDish).Updates(dish).Error
+}
+
+func (r *GormDishRepository) GetAll() ([]*model.Dish, error) {
+	var dishes []*model.Dish
+
+	err := r.DB.Find(&dishes).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return dishes, nil
 }
