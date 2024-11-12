@@ -2,14 +2,11 @@ package main
 
 import (
 	"delivery/internal/model"
-	"delivery/internal/provider"
 	"delivery/internal/service"
-	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
-	"time"
 )
 
 func main() {
@@ -33,19 +30,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Successfully migrated DB")
+	//dishProvider := provider.NewFileDishProvider("dishes.json")
+	//
+	//err = service.UpdateDishes(dishProvider, db)
+	//
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
-	start := time.Now()
-
-	dishProvider := provider.NewFileDishProvider("dishes.json")
-
-	err = service.UpdateDishes(dishProvider, db)
-
-	if err != nil {
-		log.Fatal(err)
+	orderDTO := service.CreateOrderDTO{
+		Status:   0,
+		UserId:   1,
+		Dishes:   []uint{2, 3},
+		OrderSum: 12.2,
 	}
 
-	duration := time.Since(start)
-
-	fmt.Printf("Fuction time: %v\n", duration)
+	service.CreateOrder(orderDTO, db)
 }

@@ -5,7 +5,7 @@ import "time"
 type Order struct {
 	ID           uint `gorm:"primaryKey"`
 	OrderTime    time.Time
-	OrderEndTime time.Time
+	OrderEndTime *time.Time
 	UserID       uint `gorm:"index;foreignKey;not null"`
 	ChefID       uint `gorm:"index;foreignKey"`
 	CreatedAt    time.Time
