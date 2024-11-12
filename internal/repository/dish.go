@@ -35,5 +35,5 @@ func (r *GormDishRepository) CreateOrUpdateDish(dish *model.Dish) error {
 		return err
 	}
 
-	return r.DB.Updates(&dish).Error
+	return r.DB.Model(&existingDish).Updates(dish).Error
 }

@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
+	"time"
 )
 
 func main() {
@@ -27,13 +28,14 @@ func main() {
 		&model.Dish{},
 		&model.Order{},
 		&model.Restaurant{},
-		&model.User{},
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully migrated DB")
+
+	start := time.Now()
 
 	dishProvider := provider.NewFileDishProvider("dishes.json")
 
@@ -42,4 +44,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	duration := time.Since(start)
+
+	fmt.Printf("Fuction time: %v\n", duration)
 }
