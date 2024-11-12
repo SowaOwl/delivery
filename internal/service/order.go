@@ -3,7 +3,6 @@ package service
 import (
 	"delivery/internal/model"
 	"delivery/internal/repository"
-	"fmt"
 	"gorm.io/gorm"
 	"time"
 )
@@ -11,21 +10,30 @@ import (
 type CreateOrderDTO struct {
 	Status   uint
 	UserId   uint
-	Dishes   []uint
+	Dishes   []model.Dish
 	OrderSum float32
 }
 
-func CreateOrder(orderDTO CreateOrderDTO, db *gorm.DB) {
-	repo := repository.NewGormOrderRepository(db)
+func CreateOrder(orderDTO CreateOrderDTO, db *gorm.DB) error {
+	orderRepo := repository.NewGormOrderRepository(db)
+
+	chef, err := GetFreeChef(db)
+	if err != nil {
+		return err
+	}
 
 	newOrder := model.Order{
 		OrderTime: time.Now(),
 		UserID:    orderDTO.UserId,
-		ChefID:    1,
+		Chef:      *chef,
+		Dishes:    orderDTO.Dishes,
+		OrderSum:  orderDTO.OrderSum,
 	}
 
-	_, err := repo.CreateOrder(&newOrder)
+	_, err = orderRepo.CreateOrder(&newOrder)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
+
+	return nil
 }

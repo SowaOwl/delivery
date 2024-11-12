@@ -5,14 +5,13 @@ import (
 	"delivery/internal/service"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"log"
 )
 
 func main() {
 	dsn := "root:root@tcp(127.0.0.1:33090)/delivery?parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+		//Logger: logger.Default.LogMode(logger.Silent),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -39,11 +38,13 @@ func main() {
 	//}
 
 	orderDTO := service.CreateOrderDTO{
-		Status:   0,
 		UserId:   1,
-		Dishes:   []uint{2, 3},
-		OrderSum: 12.2,
+		Dishes:   []model.Dish{{ID: 42}, {ID: 929}, {ID: 248}},
+		OrderSum: 76.2,
 	}
 
-	service.CreateOrder(orderDTO, db)
+	err = service.CreateOrder(orderDTO, db)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

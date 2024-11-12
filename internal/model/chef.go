@@ -4,6 +4,7 @@ import "time"
 
 type Chef struct {
 	ID           uint `gorm:"primaryKey"`
+	MaxOrders    uint `gorm:"default:1"`
 	UserID       uint `gorm:"index;foreignKey;not null"`
 	RestaurantID uint `gorm:"index;not null"`
 	CreatedAt    time.Time
