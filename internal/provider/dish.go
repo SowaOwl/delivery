@@ -1,7 +1,7 @@
-package providers
+package provider
 
 import (
-	"delivery/models"
+	"delivery/internal/model"
 	"errors"
 	"net/http"
 
@@ -11,7 +11,7 @@ import (
 )
 
 type DishProvider interface {
-	GetDishes() ([]models.Dish, error)
+	GetDishes() ([]model.Dish, error)
 }
 
 type FileDishProvider struct {
@@ -30,7 +30,7 @@ func NewHttpDishProvider(url string) *HttpDishProvider {
 	return &HttpDishProvider{Url: url}
 }
 
-func (p *FileDishProvider) GetDishes() ([]models.Dish, error) {
+func (p *FileDishProvider) GetDishes() ([]model.Dish, error) {
 	file, err := os.Open(p.FilePath)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (p *FileDishProvider) GetDishes() ([]models.Dish, error) {
 		return nil, err
 	}
 
-	var dishes []models.Dish
+	var dishes []model.Dish
 	err = json.Unmarshal(data, &dishes)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (p *FileDishProvider) GetDishes() ([]models.Dish, error) {
 	return dishes, nil
 }
 
-func (p *HttpDishProvider) GetDishes() ([]models.Dish, error) {
+func (p *HttpDishProvider) GetDishes() ([]model.Dish, error) {
 	resp, err := http.Get(p.Url)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (p *HttpDishProvider) GetDishes() ([]models.Dish, error) {
 		return nil, errors.New(resp.Status)
 	}
 
-	var dishes []models.Dish
+	var dishes []model.Dish
 	err = json.NewDecoder(resp.Body).Decode(&dishes)
 	if err != nil {
 		return nil, err

@@ -1,13 +1,13 @@
-package services
+package service
 
 import (
-	"delivery/providers"
-	"delivery/repositories"
+	"delivery/internal/provider"
+	"delivery/internal/repository"
 	"gorm.io/gorm"
 )
 
-func UpdateDishes(provider providers.DishProvider, db *gorm.DB) error {
-	repo := repositories.NewGormDishRepository(db)
+func UpdateDishes(provider provider.DishProvider, db *gorm.DB) error {
+	repo := repository.NewGormDishRepository(db)
 
 	dishes, err := provider.GetDishes()
 	if err != nil {

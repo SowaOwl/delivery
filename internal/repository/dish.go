@@ -1,13 +1,13 @@
-package repositories
+package repository
 
 import (
-	"delivery/models"
+	"delivery/internal/model"
 	"errors"
 	"gorm.io/gorm"
 )
 
 type DishRepository interface {
-	CreateOrUpdateDish(dish *models.Dish) error
+	CreateOrUpdateDish(dish *model.Dish) error
 }
 
 type GormDishRepository struct {
@@ -18,8 +18,8 @@ func NewGormDishRepository(db *gorm.DB) *GormDishRepository {
 	return &GormDishRepository{DB: db}
 }
 
-func (r *GormDishRepository) CreateOrUpdateDish(dish *models.Dish) error {
-	var existingDish models.Dish
+func (r *GormDishRepository) CreateOrUpdateDish(dish *model.Dish) error {
+	var existingDish model.Dish
 
 	err := r.DB.First(&existingDish, "id = ?", dish.ID).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
