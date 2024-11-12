@@ -41,6 +41,5 @@ func UpdateDishes(provider provider.DishProvider, db *gorm.DB) error {
 	}
 
 	wg.Wait()
-
 	return nil
 }
