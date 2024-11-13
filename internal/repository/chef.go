@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"delivery/internal/constants"
 	"delivery/internal/model"
 	"gorm.io/gorm"
 )
@@ -21,10 +22,10 @@ func (r *GormChefRepository) GetAllSortedByOrders() ([]model.Chef, error) {
 	var chefs []model.Chef
 
 	result := r.DB.
-		Preload("Orders").
-		Joins("LEFT JOIN orders ON orders.chef_id = chefs.id").
+		Joins("LEFT JOIN orders ON orders.chef_id = chefs.id AND orders.status IN (?, ?)", uint(constants.New), uint(constants.OnKitchen)).
+		Select("chefs.*, COUNT(orders.id) AS order_count").
 		Group("chefs.id").
-		Order("COUNT(orders.id) DESC").
+		Order("order_count").
 		Find(&chefs)
 
 	if result.Error != nil {
