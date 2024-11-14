@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
@@ -21,7 +22,7 @@ func NewJWTService(secretKey string) JWTService {
 
 func (j *JWTServiceImpl) CreateToken(userID uint) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": userID,
+		"user_id": fmt.Sprintf("%d", userID),
 		"exp":     time.Now().Add(time.Hour).Unix(),
 	}
 
